@@ -1,4 +1,4 @@
-package org.example;
+package pl.zaisd;
 
 public interface Fibonacci {
 
