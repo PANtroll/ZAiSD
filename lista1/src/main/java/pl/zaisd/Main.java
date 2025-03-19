@@ -3,13 +3,13 @@ package pl.zaisd;
 public class Main {
 
     public static void main(String[] args) {
-        Fibonacci tablica = new Tablica();
         Fibonacci rekurencja = new Rekurencja();
+        Fibonacci tablica = new Tablica();
         Fibonacci macierz = new Macierz();
-//        int number = 50;
-        int number = 10_000_000;
+//        int stopValue = 50;
+        int stopValue = 10_000_000;
         int increment = 100;
-        for (int i = 1_000; i <= number; i += increment) {
+        for (int i = 1_000; i <= stopValue; i += increment) {
 //            runWithStopwatch(rekurencja, i);//TODO uncomment if want to use first algorithm
             runWithStopwatch(tablica, i);
             runWithStopwatch(macierz, i);
