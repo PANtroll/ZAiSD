@@ -1,5 +1,6 @@
 package pl.zaisd;
 
+import java.math.BigInteger;
 import java.util.Random;
 
 public class MillerRabinAlgorithm implements PrimeNumbers {
@@ -19,9 +20,11 @@ public class MillerRabinAlgorithm implements PrimeNumbers {
         for (powerMultiplier = n-1; powerMultiplier % 2 == 0; powerIndex++) {
             powerMultiplier = powerMultiplier / 2;
         }
+        BigInteger d = new BigInteger("" + powerMultiplier);
+        BigInteger mod = new BigInteger("" + n);
         for (long i = 0; i < MAX_ITERATION; i++) {
             long random = r.nextLong(2, n - 2);//a
-            long x = quickPower(random, powerMultiplier, n);
+            long x = quickPower(new BigInteger(""+random), d, mod);
             if (x != 1 && x != n-1) {
                 for (int j = 0; j < powerIndex - 1; j++) {
                     x = (x * x) % n;
@@ -36,16 +39,16 @@ public class MillerRabinAlgorithm implements PrimeNumbers {
         }
         return true;
     }
-    public static long quickPower(long x, long y, long mod) {
-        long result = 1;
-        x = x % mod;
-        while (y > 0) {
-            if (y % 2 == 1) {
-                result = (result * x) % mod;
+    public static long quickPower(BigInteger x, BigInteger y, BigInteger mod) {
+        BigInteger result = BigInteger.ONE;
+        x = x.mod(mod);
+        while (y.compareTo(BigInteger.ZERO) > 0) {
+            if (y.mod(BigInteger.TWO).compareTo(BigInteger.ONE) == 0) {
+                result = (result.multiply(x)).mod(mod);
             }
-            y = y / 2;
-            x = (x * x) % mod;
+            y = y.divide(BigInteger.TWO);
+            x = (x.multiply(x)).mod(mod);
         }
-        return result;
+        return result.longValue();
     }
 }

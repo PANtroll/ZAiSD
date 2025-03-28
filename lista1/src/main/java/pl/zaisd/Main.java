@@ -6,16 +6,16 @@ public class Main {
         Fibonacci rekurencja = new Rekurencja();
         Fibonacci tablica = new Tablica();
         Fibonacci macierz = new Macierz();
-//        int stopValue = 50;
-        int stopValue = 10_000_000;
-        int increment = 100;
-        for (int i = 1_000; i <= stopValue; i += increment) {
-//            runWithStopwatch(rekurencja, i);//TODO uncomment if want to use first algorithm
+        int stopValue = 40;
+//        int stopValue = 10_000_000;
+        int increment = 1;
+        for (int i = 1; i <= stopValue; i += increment) {
+            runWithStopwatch(rekurencja, i);//uncomment if you want to use first algorithm
             runWithStopwatch(tablica, i);
             runWithStopwatch(macierz, i);
-            if(i%(increment*10)==0) {//makes increment 10 times bigger so increment is always about to 10%
-                increment *= 10;
-            }
+//            if(i%(increment*10)==0) {//makes increment 10 times bigger so increment is always about to 10%
+//                increment *= 10;
+//            }
 //            increment *= 2; //used in last algorithm
         }
     }
