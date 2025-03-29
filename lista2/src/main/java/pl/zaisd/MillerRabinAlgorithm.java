@@ -5,7 +5,7 @@ import java.util.Random;
 
 public class MillerRabinAlgorithm implements PrimeNumbers {
 
-    public static final long MAX_ITERATION = 100;
+    public static final long MAX_ITERATION = 10;
 
     @Override
     public boolean isPrime(long n) {
@@ -24,22 +24,22 @@ public class MillerRabinAlgorithm implements PrimeNumbers {
         BigInteger mod = new BigInteger("" + n);
         for (long i = 0; i < MAX_ITERATION; i++) {
             long random = r.nextLong(2, n - 2);//a
-            long x = quickPower(new BigInteger(""+random), d, mod);
-            if (x != 1 && x != n-1) {
-                for (int j = 0; j < powerIndex - 1; j++) {
-                    x = (x * x) % n;
-                    if (x == n - 1) {
+            BigInteger x = quickPower(new BigInteger(""+random), d, mod);
+            if (x.compareTo(BigInteger.ONE) != 0 && x.compareTo(mod.subtract(BigInteger.ONE)) != 0) {
+                for (long j = 0; j < powerIndex - 1; j++) {
+                    x = (x.multiply(x)).mod(mod);
+                    if (x.compareTo(mod.subtract(BigInteger.ONE)) == 0) {
                         break;
                     }
                 }
-                if (x != n - 1) {
+                if (x.compareTo(mod.subtract(BigInteger.ONE)) != 0) {
                     return false;
                 }
             }
         }
         return true;
     }
-    public static long quickPower(BigInteger x, BigInteger y, BigInteger mod) {
+    public static BigInteger quickPower(BigInteger x, BigInteger y, BigInteger mod) {
         BigInteger result = BigInteger.ONE;
         x = x.mod(mod);
         while (y.compareTo(BigInteger.ZERO) > 0) {
@@ -49,6 +49,6 @@ public class MillerRabinAlgorithm implements PrimeNumbers {
             y = y.divide(BigInteger.TWO);
             x = (x.multiply(x)).mod(mod);
         }
-        return result.longValue();
+        return result;
     }
 }
