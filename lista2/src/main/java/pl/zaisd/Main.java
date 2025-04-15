@@ -13,19 +13,18 @@ public class Main {
     public static void main(String[] args) throws IOException {
         PrimeNumbers iteration = new Iteration();
         PrimeNumbers millerRabin = new MillerRabinAlgorithm();
-
         File path = new File("dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
-        long min = (long) Math.pow(10, 8);
-        long max = (long) Math.pow(10, 18);
+        long i = (long) Math.pow(10, 8);
+        long max = 9L * (long) Math.pow(10, 18);
         long increment = 2;
-        for (; min <= max; min += increment) {
-            Tuple result1 = runWithStopwatch(iteration, min);
-            Tuple result2 = runWithStopwatch(millerRabin, min);
+        for (; i <= max; i += increment) {
+            Tuple result1 = runWithStopwatch(iteration, i);
+            Tuple result2 = runWithStopwatch(millerRabin, i);
             if (result1.isPrime || result2.isPrime) {
-                writer.write(min + DELIMITER + result1.isPrime + DELIMITER + result1.duration +
-                        DELIMITER + result2.isPrime + DELIMITER + result2.duration + DELIMITER + new BigInteger("" + min).isProbablePrime(10) + "\r\n");
+                writer.write(i + DELIMITER + result1.isPrime + DELIMITER + result1.duration +
+                        DELIMITER + result2.isPrime + DELIMITER + result2.duration + DELIMITER + new BigInteger("" + i).isProbablePrime(10) + "\r\n");
             }
             System.out.println();
 

@@ -12,7 +12,6 @@ public class MillerRabinAlgorithm implements PrimeNumbers {
         if (n < 2) return false;
         if (n == 2) return true;
         if (n % 2 == 0) return false;
-        if (n == 3) return true;
 
         Random r = new Random();
         long powerIndex = 0;//s
