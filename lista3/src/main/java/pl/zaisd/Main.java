@@ -75,7 +75,10 @@ public class Main {
 //            System.out.println();
         }
         Random r = new Random();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < max; i++) {
+            dynamicArray.at(r.nextInt(dynamicArray.size()));
+            dynamicArray.at(r.nextInt(dynamicArray.size()));
+            dynamicArray.at(r.nextInt(dynamicArray.size()));
             dynamicArray.at(r.nextInt(dynamicArray.size()));
         }
         for (int i = max; i > 0; i--) {
