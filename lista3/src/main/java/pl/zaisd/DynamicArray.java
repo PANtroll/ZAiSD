@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class DynamicArray<T> {
 
-    public static final int MIN_SIZE = 2;
+    public static final int MIN_SIZE = 4;
     T[] array;
 
     int size;
