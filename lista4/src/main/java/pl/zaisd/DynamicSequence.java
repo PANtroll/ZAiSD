@@ -19,4 +19,9 @@ public class DynamicSequence implements Sequence {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "DynamicSequence";
+    }
 }
