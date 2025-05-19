@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -12,15 +13,18 @@ public class Main {
     public static final String DELIMITER = ";";
 
     public static void main(String[] args) throws IOException {
-        List<Integer> arrayList = generateData(10);
+//        List<Integer> arrayList = generateData(10);
+        List<Integer> arrayList = Arrays.asList(2,-1,3,-5);
+
+        Sequence naiveSequence = new NaiveSequence();
+        Sequence dynamicSequence = new DynamicSequence();
+
         File path = new File("dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         System.out.println(arrayList);
-        int max = 100_000;
-        for (int i = 100; i < max; i += 300) {
-            runWithStopwatch(i, arrayList, writer);
-            System.out.println("progress: " + i * 100 / max);
-        }
+        runWithStopwatch(naiveSequence, arrayList, writer);
+        runWithStopwatch(dynamicSequence, arrayList, writer);
+
         writer.close();
     }
 
@@ -37,15 +41,17 @@ public class Main {
         return result;
     }
 
-    private static void runWithStopwatch(int max, List<Integer> dynamicArray, BufferedWriter writer) throws IOException {
+    private static void runWithStopwatch(Sequence algorithm, List<Integer> sequence, BufferedWriter writer) throws IOException {
         long startTime = System.nanoTime();
+        ResultType result = null;
         for (int i = 0; i < 5; i++) {
-//            doSomeOperationOnArray(max, dynamicArray);
+            result = algorithm.getMaxSequence(sequence);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
-        writer.write("DynamicArray" + DELIMITER + max + durationStr + DELIMITER + "\r\n");
-        System.out.println("Duration: " + duration + "ms");
+        writer.write( algorithm +  durationStr + DELIMITER + "\r\n");
+        System.out.println(algorithm + ", duration: " + duration + "ms");
+        System.out.println("Result: " + result);
     }
 
 }
