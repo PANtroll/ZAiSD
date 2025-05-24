@@ -23,12 +23,12 @@ public class Main {
         File path = new File("lista4/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
 
-        for (int i = 10; i < 50_000_000; i = (int) (i*1.5)) {
+        for (int i = 10; i < 5_000; i = (int) (i*1.5)) {
             List<Integer> arrayList = generateData(i);
 //            System.out.println(arrayList);
             System.out.println("Size: " + arrayList.size());
-//            runWithStopwatch(naiveSequence, arrayList, writer);
-//            runWithStopwatch(dynamicSequence, arrayList, writer);
+            runWithStopwatch(naiveSequence, arrayList, writer);
+            runWithStopwatch(dynamicSequence, arrayList, writer);
             runWithStopwatch(divideConquerSequence, arrayList, writer);
             runWithStopwatch(greedySequence, arrayList, writer);
         }
