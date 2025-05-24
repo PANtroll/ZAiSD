@@ -1,0 +1,8 @@
+Laboratorium 4 – różne techniki rozwiązania problemu maksymalnego fragmentu ciągu
+Dany jest n-elementowy ciąg liczb całkowitych A = (a0, a1, …, an-1). Wyznacz taki fragment tego ciągu, którego suma jest największa. Rozwiąż to zadanie za pomocą strategii:
+• naiwnej – wyznacz sumę dla wszystkich możliwych fragmentów i wybierz maksimum – O(n3);
+• programowania dynamicznego – stablicuj sumę dla wszystkich możliwych fragmentów i wybierz maksimum – O(n2);
+• dziel i zwyciężaj – podziel ciąg na dwie równe części, wyznacz rozwiązanie dla każdej z nich rekurencyjnie, oblicz jeszcze rozwiązanie leżące na styku obu części i wybierz maksimum – O(n · log n);
+• zachłannej – obliczaj sumy prefiksowe dopóki wartości są dodatnie, w przeciwnym przypadku odetnij prefiks i zacznij liczenie sum od nowa, na koniec wybierz maksimum – O(n).
+Dla uproszczenia można założyć, że w tym ciągu nie występuje 0, oraz że na pozycjach parzystych są liczby dodatnie a na pozycjach nieparzystych ujemne.
+Dla każdej z technik najpierw przedstaw ideę rozwiązania zadania, zapisz algorytm w pseudokodzie (bardzo ogólnie ale z komentarzami), uzasadnij jego poprawność (przede wszystkim w technice zachłannej) i oszacuj złożoność obliczeniową. Następnie zaimplementuj te techniki w wybranym języku programowania. Przetestuj działanie obu implementacji na nietrywialnych danych (duże dane wygenerowane osobnym programem) i porównaj wyniki. Oszacuj złożoność obliczeniową tych metod.
