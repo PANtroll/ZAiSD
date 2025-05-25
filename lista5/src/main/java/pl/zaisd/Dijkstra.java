@@ -17,9 +17,9 @@ public class Dijkstra implements Algorithm {
             int initCost = Integer.MAX_VALUE;
             if(node.equals(request.source())){
                 initCost = 0;
+                pq.offer(node);
             }
             costs.put(node, initCost);
-            pq.offer(node);
         }
         while(!pq.isEmpty()){
             Node current = pq.poll();

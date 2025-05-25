@@ -11,7 +11,6 @@ import java.util.Map;
 public class BellmanFord implements Algorithm {
     @Override
     public int search(List<Node> graph, GraphRequest request) {
-        int cost = 0;
         Map<Node, Integer> costs = new HashMap<>();//weight of nodes
         for (Node node : graph) {
             if (node.equals(request.source())) {
