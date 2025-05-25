@@ -24,6 +24,13 @@ public class Main {
 
         Algorithm dijkstra = new Dijkstra();
 
+        for (GraphRequest request: requests){
+            if(!BFS.chceckPath(request.source(), request.destination())) {
+                System.out.println("Brak ścieżki dla " + request);
+                return;
+            }
+        }
+
         File path = new File("lista5/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         runWithStopwatch(dijkstra, graph, requests, writer);
