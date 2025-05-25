@@ -23,6 +23,7 @@ public class Main {
         System.out.println(graph);
 
         Algorithm dijkstra = new Dijkstra();
+        Algorithm bellmanFord = new BellmanFord();
 
         for (GraphRequest request: requests){
             if(!BFS.chceckPath(request.source(), request.destination())) {
@@ -33,19 +34,20 @@ public class Main {
 
         File path = new File("lista5/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        runWithStopwatch(bellmanFord, graph, requests, writer);
         runWithStopwatch(dijkstra, graph, requests, writer);
 
         writer.close();
     }
 
     private static void runWithStopwatch(Algorithm algorithm, List<Node> graph, List<GraphRequest> requests, BufferedWriter writer) throws IOException {
-        long startTime = System.nanoTime();
         int result = 0;
         for (GraphRequest request : requests) {
-            for (int i = 0; i < 5; i++) {
+            long startTime = System.nanoTime();
+            for (int i = 0; i < 1; i++) {
                 result = algorithm.search(graph, request);
             }
-            double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
+            double duration = (System.nanoTime() - startTime) / 1_000_000.0;// 5 invokes
             String durationStr = (DELIMITER + duration).replace('.', ',');
             writer.write( algorithm +  durationStr + DELIMITER + result + "\r\n");
             System.out.println(algorithm + ", duration: " + duration + "ms");

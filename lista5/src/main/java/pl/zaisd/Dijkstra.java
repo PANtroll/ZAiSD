@@ -11,31 +11,30 @@ public class Dijkstra implements Algorithm {
 
     @Override
     public int search(List<Node> graph, GraphRequest request) {
-        int cost = 0;
-        Map<Node, Integer> map = new HashMap<>();//weight of nodes
-        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(map::get));
+        Map<Node, Integer> costs = new HashMap<>();//weight of nodes
+        PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(costs::get));
         for (Node node : graph) {
+            int initCost = Integer.MAX_VALUE;
             if(node.equals(request.source())){
-                map.put(node, 0);
+                initCost = 0;
             }
-            else{
-                map.put(node, Integer.MAX_VALUE);
-            }
-            pq.add(node);
+            costs.put(node, initCost);
+            pq.offer(node);
         }
         while(!pq.isEmpty()){
             Node current = pq.poll();
             for(Edge edge : current.neighbours()){
-                int distance = map.get(current) + edge.weight();
-                if(distance < map.get(edge.neighbour())){
-                    pq.remove(edge.neighbour());
-                    map.replace(edge.neighbour(), distance);
-                    pq.add(edge.neighbour());
+
+                int distance = costs.get(current) + edge.weight();
+                if(distance < costs.get(edge.neighbour())){
+//                    pq.remove(current);
+                    costs.replace(edge.neighbour(), distance);
+                    pq.offer(edge.neighbour());
                 }
             }
         }
 
-        return map.get(request.destination());
+        return costs.get(request.destination());
     }
 
     @Override
