@@ -25,20 +25,18 @@ public class Main {
         Algorithm dijkstra = new Dijkstra();
         Algorithm bellmanFord = new BellmanFord();
 
-        for (GraphRequest request: requests){
-            if(!BFS.chceckPath(request.source(), request.destination())) {
-                System.out.println("Brak ścieżki dla " + request);
-                return;
-            }
-        }
-
         File path = new File("lista5/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         for (GraphRequest request : requests) {
-            int bellmanFordResult = runWithStopwatch(bellmanFord, graph, request, writer);
-            int dijkstraResult = runWithStopwatch(dijkstra, graph, request, writer);
-            if(bellmanFordResult != dijkstraResult) {
-                throw new RuntimeException("Different result for " + request);
+            if(!BFS.chceckPath(request.source(), request.destination())) {
+                System.out.println("Brak ścieżki dla " + request);
+            }
+            else {
+                int bellmanFordResult = runWithStopwatch(bellmanFord, graph, request, writer);
+                int dijkstraResult = runWithStopwatch(dijkstra, graph, request, writer);
+                if (bellmanFordResult != dijkstraResult) {
+                    throw new RuntimeException("Different result for " + request);
+                }
             }
         }
 
