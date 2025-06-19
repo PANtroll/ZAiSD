@@ -3,10 +3,12 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ZAiSD.iml" filepath="$PROJECT_DIR$/.idea/ZAiSD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lista1/lista1.iml" filepath="$PROJECT_DIR$/lista1/lista1.iml" />
       <module fileurl="file://$PROJECT_DIR$/lista2/lista2.iml" filepath="$PROJECT_DIR$/lista2/lista2.iml" />
       <module fileurl="file://$PROJECT_DIR$/lista3/lista3.iml" filepath="$PROJECT_DIR$/lista3/lista3.iml" />
       <module fileurl="file://$PROJECT_DIR$/lista4/lista4.iml" filepath="$PROJECT_DIR$/lista4/lista4.iml" />
       <module fileurl="file://$PROJECT_DIR$/lista5/lista5.iml" filepath="$PROJECT_DIR$/lista5/lista5.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lista6/lista6.iml" filepath="$PROJECT_DIR$/lista6/lista6.iml" />
     </modules>
   </component>
 </project>

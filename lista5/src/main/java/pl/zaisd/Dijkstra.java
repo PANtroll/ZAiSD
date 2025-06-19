@@ -11,7 +11,7 @@ public class Dijkstra implements Algorithm {
 
     @Override
     public int search(List<Node> graph, GraphRequest request) {
-        Map<Node, Integer> costs = new HashMap<>();//weight of nodes
+        Map<Node, Integer> costs = new HashMap<>();//costs of nodes
         PriorityQueue<Node> pq = new PriorityQueue<>(Comparator.comparingInt(costs::get));
         for (Node node : graph) {
             int initCost = Integer.MAX_VALUE;
@@ -27,7 +27,6 @@ public class Dijkstra implements Algorithm {
 
                 int distance = costs.get(current) + edge.weight();
                 if(distance < costs.get(edge.neighbour())){
-//                    pq.remove(current);
                     costs.replace(edge.neighbour(), distance);
                     pq.offer(edge.neighbour());
                 }

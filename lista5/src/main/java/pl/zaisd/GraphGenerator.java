@@ -1,9 +1,6 @@
 package pl.zaisd;
 
-import pl.zaisd.graph.Edge;
-
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,8 +25,8 @@ public class GraphGenerator {
         int numberOfNodes = 1000;
         int numberOfEdges = 10_000;
         int numberOfRequests = 500;
-        List<Connection> edges = generateGraphConncetions(numberOfNodes, numberOfEdges);
-        List<Connection> requests = generateGraphConncetions(numberOfNodes, numberOfRequests);
+        List<Connection> edges = generateGraphConnections(numberOfNodes, numberOfEdges);
+        List<Connection> requests = generateGraphConnections(numberOfNodes, numberOfRequests);
 
         //write
         try (BufferedWriter writer = Files.newBufferedWriter(path)){
@@ -54,7 +51,7 @@ public class GraphGenerator {
 
     }
 
-    private List<Connection> generateGraphConncetions(int numberOfNodes, int loopLimit) {
+    private List<Connection> generateGraphConnections(int numberOfNodes, int loopLimit) {
         int skips;
         List<Connection> result = new ArrayList<>();
         Random random = new Random();

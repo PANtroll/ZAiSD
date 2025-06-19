@@ -7,7 +7,7 @@ import java.util.*;
 
 public class BFS {
 
-    public static boolean chceckPath(Node source, Node destination){
+    public static boolean checkPath(Node source, Node destination){
         List<Node> checkedNodes = new LinkedList<>();
         Queue<Node> nodesToCheck = new LinkedList<>();
         nodesToCheck.add(source);

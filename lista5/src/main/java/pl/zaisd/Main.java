@@ -28,7 +28,7 @@ public class Main {
         File path = new File("lista5/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         for (GraphRequest request : requests) {
-            if(!BFS.chceckPath(request.source(), request.destination())) {
+            if(!BFS.checkPath(request.source(), request.destination())) {
                 System.out.println("Brak ścieżki dla " + request);
             }
             else {
