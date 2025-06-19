@@ -22,12 +22,12 @@ public class GraphGenerator {
 
     public void generateFile(Path path){
         Random random = new Random();
-        int numberOfNodes = random.nextInt(2, 1000);
-        int numberOfEdges = random.nextInt(1, 100_000);
-        int numberOfRequests = random.nextInt(1, 10_000);
-//        int numberOfNodes = 4;
-//        int numberOfEdges = 3;
-//        int numberOfRequests = 2;
+//        int numberOfNodes = random.nextInt(2, 1000);
+//        int numberOfEdges = random.nextInt(1, 100_000);
+//        int numberOfRequests = random.nextInt(1, 10_000);
+        int numberOfNodes = 1000;
+        int numberOfEdges = 10_000;
+        int numberOfRequests = 500;
         List<Connection> edges = generateGraphConncetions(numberOfNodes, numberOfEdges);
         List<Connection> requests = generateGraphConncetions(numberOfNodes, numberOfRequests);
 

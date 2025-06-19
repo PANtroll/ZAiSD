@@ -25,33 +25,36 @@ public class Main {
         Algorithm dijkstra = new Dijkstra();
         Algorithm bellmanFord = new BellmanFord();
 
-        for (GraphRequest request: requests){
+        File path = new File("lista5/dane.csv");
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        for (GraphRequest request : requests) {
             if(!BFS.chceckPath(request.source(), request.destination())) {
                 System.out.println("Brak ścieżki dla " + request);
-                return;
+            }
+            else {
+                int bellmanFordResult = runWithStopwatch(bellmanFord, graph, request, writer);
+                int dijkstraResult = runWithStopwatch(dijkstra, graph, request, writer);
+                if (bellmanFordResult != dijkstraResult) {
+                    throw new RuntimeException("Different result for " + request);
+                }
             }
         }
 
-        File path = new File("lista5/dane.csv");
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-        runWithStopwatch(bellmanFord, graph, requests, writer);
-        runWithStopwatch(dijkstra, graph, requests, writer);
 
         writer.close();
     }
 
-    private static void runWithStopwatch(Algorithm algorithm, List<Node> graph, List<GraphRequest> requests, BufferedWriter writer) throws IOException {
+    private static int runWithStopwatch(Algorithm algorithm, List<Node> graph, GraphRequest request, BufferedWriter writer) throws IOException {
         int result = 0;
-        for (GraphRequest request : requests) {
-            long startTime = System.nanoTime();
-            for (int i = 0; i < 1; i++) {
-                result = algorithm.search(graph, request);
-            }
-            double duration = (System.nanoTime() - startTime) / 1_000_000.0;// 5 invokes
-            String durationStr = (DELIMITER + duration).replace('.', ',');
-            writer.write( algorithm +  durationStr + DELIMITER + result + "\r\n");
-            System.out.println(algorithm + ", duration: " + duration + "ms");
-            System.out.println("Result: " + result);
+        long startTime = System.nanoTime();
+        for (int i = 0; i < 5; i++) {
+            result = algorithm.search(graph, request);
         }
+        double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
+        String durationStr = (DELIMITER + duration).replace('.', ',');
+        writer.write( algorithm +  durationStr + DELIMITER + result + "\r\n");
+        System.out.println(algorithm + ", duration: " + duration + "ms");
+        System.out.println("Result: " + result);
+        return result;
     }
 }
