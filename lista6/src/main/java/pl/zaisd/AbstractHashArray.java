@@ -36,7 +36,7 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
             if (searchAttempts > 2 * Math.log(capacity) + 1) {
 //                hash++;
 //                searchAttempts = 0;
-                System.out.println("Too many searches: " + searchAttempts);
+                System.out.println(this.toString() + ": Too many searches: " + searchAttempts);
             }
             subHash = hashConflictIncrease(hash, searchAttempts);
             obj = (V) array[subHash];
@@ -55,7 +55,7 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
             if (insertAttempts > 2 * Math.log(capacity) + 1) {
 //                hash++;
 //                insertAttempts = 0;
-                System.out.println("Too many inserts: " + insertAttempts);
+                System.out.println(this.toString() + ": Too many inserts: " + insertAttempts);
             }
             subHash = hashConflictIncrease(hash, insertAttempts);
             insertAttempts++;

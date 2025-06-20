@@ -20,19 +20,20 @@ public class Main {
 
         File path = new File("lista6/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-        runWithStopwatch(hashArrayLine, writer);
-        runWithStopwatch(hashArrayDouble, writer);
-        runWithStopwatch(hashArraySquare, writer);
-
+        for (int i = 10; i < 1_000; i = i*2) {
+            runWithStopwatch(hashArrayLine, writer, i);
+            runWithStopwatch(hashArrayDouble, writer, i);
+            runWithStopwatch(hashArraySquare, writer, i);
+        }
         writer.close();
     }
 
-    private static void runWithStopwatch(HashArray hashArray, BufferedWriter writer) throws IOException {
+    private static void runWithStopwatch(HashArray hashArray, BufferedWriter writer, int iterations) throws IOException {
         int result = 0;
         Random r = new Random();
         List<Integer> values = new LinkedList<>();
         long startTime = System.nanoTime();
-        for (int i = 0; i < NUMBER_OF_INSERTIONS; i++) {
+        for (int i = 0; i < iterations; i++) {
             int value = r.nextInt();
             values.add(value);
             hashArray.insert(value);
@@ -43,7 +44,7 @@ public class Main {
                 throw new IllegalStateException("Object not found");
             }
         }
-        for (int i = 0; i < NUMBER_OF_INSERTIONS; i++) {
+        for (int i = 0; i < iterations; i++) {
             Integer value = r.nextInt();
             Object searchedObject = hashArray.search(value);
             if(values.contains(value) && !value.equals(searchedObject)){
