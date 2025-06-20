@@ -20,7 +20,7 @@ public class Main {
 
         File path = new File("lista6/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-        for (int i = 10; i < 50_000; i = i*2) {
+        for (int i = 10; i < 100_000; i = i*2) {
             runWithStopwatch(hashArrayLine, writer, i);
             runWithStopwatch(hashArrayDouble, writer, i);
             runWithStopwatch(hashArraySquare, writer, i);
