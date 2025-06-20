@@ -4,12 +4,13 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Objects;
 
-public abstract class AbstractHashArray<V> {
+public abstract class AbstractHashArray<V> implements HashArray<V> {
 
-    Object[] array = new Object[7];
+    public static final int INITIAL_ARRAY_SIZE = 11;
+    Object[] array = new Object[INITIAL_ARRAY_SIZE];
 
     private int size = 0;
-    private int capacity = 7;
+    private int capacity = INITIAL_ARRAY_SIZE;
 
     public int size() {
         return size;
@@ -21,46 +22,63 @@ public abstract class AbstractHashArray<V> {
         return size == 0;
     }
 
-    protected abstract int hashConflictIncrease(int hash);
+    protected abstract int hashConflictIncrease(int hash, int attempt);
 
     public V search(V value) {
         if (value == null) {
             return null;
         }
-        int hash = Math.abs(Objects.hashCode(value)) % (capacity - 1);
-        V result = null;
+        int hash = getHash(value);
+        int subHash = hash;
         V obj = (V) array[hash];
-        while (!value.equals(obj)) {
-            hash = hashConflictIncrease(hash);
-            obj = (V) array[(hash) % size];
+        int searchAttempts = 0;
+        while (!value.equals(obj) && obj != null) {
+            if (searchAttempts > 2 * Math.log(capacity) + 1) {
+//                hash++;
+//                searchAttempts = 0;
+                System.out.println("Too many searches: " + searchAttempts);
+            }
+            subHash = hashConflictIncrease(hash, searchAttempts);
+            obj = (V) array[subHash];
+            searchAttempts++;
         }
-        if (value.equals(obj)) {
-            result = obj;
-        }
-        return result;
+//        System.out.println("value found: " + value + " index: " + hash + " searchAttempts: " + searchAttempts);
+        return obj;
     }
 
     public V insert(V value) {
         checkCapacityAndResize();
-        int hash = Math.abs(Objects.hashCode(value) % (capacity  - 1));
-        while (array[hash] != null) {
-            hash = hashConflictIncrease(hash);
+        int hash = getHash(value);
+        int subHash = hash;
+        int insertAttempts = 0;
+        while (array[subHash] != null) {
+            if (insertAttempts > 2 * Math.log(capacity) + 1) {
+//                hash++;
+//                insertAttempts = 0;
+                System.out.println("Too many inserts: " + insertAttempts);
+            }
+            subHash = hashConflictIncrease(hash, insertAttempts);
+            insertAttempts++;
         }
+        hash = subHash;
+//        System.out.println("value added: " + value + " index: " + hash + " insertAttempts: " + insertAttempts);
         array[hash] = value;
         size++;
         return null;
     }
 
-    public V remove(Object value) {
+    public V remove(V value) {
         if (value == null) {
             return null;
         }
-        int hash = Math.abs(Objects.hashCode(value));
+        int hash = getHash(value);
         V result = null;
         V obj = (V) array[hash];
+        int removeAttempts = 0;
         while (!value.equals(obj)) {
-            hash = hashConflictIncrease(hash);
+            hash = hashConflictIncrease(hash, removeAttempts);
             obj = (V) array[(hash) % size];
+            removeAttempts++;
         }
         if (value.equals(obj)) {
             result = obj;
@@ -70,15 +88,20 @@ public abstract class AbstractHashArray<V> {
         return result;
     }
 
+    private int getHash(V value) {
+        return Math.abs(Objects.hashCode(value) % capacity);
+    }
+
     public void clear() {
         array = new Object[capacity];
         size = 0;
     }
 
     private boolean checkCapacityAndResize() {
-        if (size < 0.75 * capacity) {
+        if (size + 1  < 0.66 * capacity) {
             return false;
         }
+//        System.out.println("increased capacity");
         Object[] oldArray = Arrays.copyOf(array, capacity);
         int newCapacity = 2 * capacity + 1;
         while (!new BigInteger(String.valueOf(newCapacity)).isProbablePrime(7)) {

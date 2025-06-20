@@ -24,7 +24,6 @@ public class BFS {
                 nodesToCheck.add(node);
                 checkedNodes.add(node);
             }
-//            nodesToCheck.remove(0);
         }
 
         return false;

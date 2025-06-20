@@ -9,13 +9,14 @@ import java.util.*;
 
 public class Main {
     private static final String DELIMITER = ";";
+    public static final int NUMBER_OF_INSERTIONS = 50;
 
     public static void main(String[] args) throws IOException {
 
 
-        AbstractHashArray<Integer> hashArrayLine = new HashArrayLine<>();
-        AbstractHashArray<Integer> hashArrayDouble = new HashArrayDouble<>();
-        AbstractHashArray<Integer> hashArraySquare = new HashArraySquare<>();
+        HashArray<Integer> hashArrayLine = new HashArrayLine<>();
+        HashArray<Integer> hashArrayDouble = new HashArrayDouble<>();
+        HashArray<Integer> hashArraySquare = new HashArraySquare<>();
 
         File path = new File("lista6/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -26,20 +27,27 @@ public class Main {
         writer.close();
     }
 
-    private static void runWithStopwatch(AbstractHashArray hashArray, BufferedWriter writer) throws IOException {
+    private static void runWithStopwatch(HashArray hashArray, BufferedWriter writer) throws IOException {
         int result = 0;
         Random r = new Random();
         List<Integer> values = new LinkedList<>();
         long startTime = System.nanoTime();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < NUMBER_OF_INSERTIONS; i++) {
             int value = r.nextInt();
             values.add(value);
             hashArray.insert(value);
         }
         for (Integer value: values){
             Object searchedObject = hashArray.search(value);
-            if(searchedObject == null || value == searchedObject){
-                throw new RuntimeException("Object not found");
+            if(searchedObject == null || !value.equals(searchedObject)){
+                throw new IllegalStateException("Object not found");
+            }
+        }
+        for (int i = 0; i < NUMBER_OF_INSERTIONS; i++) {
+            Integer value = r.nextInt();
+            Object searchedObject = hashArray.search(value);
+            if(values.contains(value) && !value.equals(searchedObject)){
+                throw new IllegalStateException("Object not found");
             }
         }
 
@@ -47,6 +55,6 @@ public class Main {
         String durationStr = (DELIMITER + duration).replace('.', ',');
         writer.write(hashArray + durationStr + DELIMITER + result + "\r\n");
         System.out.println(hashArray + ", duration: " + duration + "ms");
-        System.out.println("Result: " + result);
+//        System.out.println("Result: " + result);
     }
     }
