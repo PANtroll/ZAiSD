@@ -20,7 +20,7 @@ public class Main {
 
         File path = new File("lista6/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-        for (int i = 10; i < 1_000; i = i*2) {
+        for (int i = 10; i < 50_000; i = i*2) {
             runWithStopwatch(hashArrayLine, writer, i);
             runWithStopwatch(hashArrayDouble, writer, i);
             runWithStopwatch(hashArraySquare, writer, i);
@@ -54,7 +54,7 @@ public class Main {
 
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
-        writer.write(hashArray + durationStr + DELIMITER + result + "\r\n");
+        writer.write(hashArray + durationStr + DELIMITER + iterations + "\r\n");
         System.out.println(hashArray + ", duration: " + duration + "ms");
 //        System.out.println("Result: " + result);
     }
