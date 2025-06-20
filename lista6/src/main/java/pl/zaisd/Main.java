@@ -14,10 +14,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        HashArray<Double> hashArrayLine = new HashArrayLine<>();
-        HashArray<Double> hashArrayDouble = new HashArrayDouble<>();
-        HashArray<Double> hashArraySquare = new HashArraySquare<>();
-        Set<Double> set = new HashSet<>();
+        HashArray<String> hashArrayLine = new HashArrayLine<>();
+        HashArray<String> hashArrayDouble = new HashArrayDouble<>();
+        HashArray<String> hashArraySquare = new HashArraySquare<>();
+        Set<String> set = new HashSet<>();
 
         File path = new File("lista6/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -63,21 +63,21 @@ public class Main {
     private static void runWithStopwatch(Set set, BufferedWriter writer, int iterations) throws IOException {
         int result = 0;
         Random r = new Random();
-        List<Double> values = new LinkedList<>();
+        List<String> values = new LinkedList<>();
         long startTime = System.nanoTime();
         for (int i = 0; i < iterations; i++) {
-            double value = r.nextDouble();
+            String value = randomString(r, 10);
             values.add(value);
             set.add(value);
         }
-        for (Double value : values) {
+        for (String value : values) {
             boolean searchedObject = set.contains(value);
             if (!searchedObject) {
                 throw new IllegalStateException("Object not found");
             }
         }
         for (int i = 0; i < iterations; i++) {
-            Double value = r.nextDouble();
+            String value = randomString(r, 10);
             boolean searchedObject = set.contains(value);
             if (values.contains(value) && !searchedObject) {
                 throw new IllegalStateException("Object not found");
@@ -89,5 +89,14 @@ public class Main {
         writer.write("HashSet" + durationStr + DELIMITER + iterations + "\r\n");
         System.out.println("HashSet" + ", duration: " + duration + "ms");
 //        System.out.println("Result: " + result);
+    }
+
+    private static String randomString(Random random, int maxLength){
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(maxLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 }
