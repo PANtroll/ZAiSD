@@ -12,7 +12,7 @@ public class BTree<T extends Comparable<T>> {
         if (root != null) root.traverse();
     }
 
-    public BTreeNode search(T key) {
+    public T search(T key) {
         return (root == null) ? null : root.search(key);
     }
 
@@ -33,5 +33,21 @@ public class BTree<T extends Comparable<T>> {
                 root.insertNonFull(key);
             }
         }
+    }
+
+    void remove(T key) {
+        if (root == null) return;
+
+        root.remove(key);
+
+        if (root.keys.size() == 0) {
+            if (root.leaf) root = null;
+            else root = root.children.get(0);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "BTree" + t;
     }
 }

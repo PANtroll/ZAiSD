@@ -17,13 +17,13 @@ public class BTreeNode<T extends Comparable<T>> {
         this.children = new ArrayList<>();
     }
 
-    public BTreeNode<T> search(T key) {
+    public T search(T key) {
         int i = 0;
         while (i < keys.size() && key.compareTo(keys.get(i)) > 0) {
             i++;
         }
         if (i < keys.size() && key.compareTo(keys.get(i)) == 0) {
-            return this;
+            return keys.get(i);
         }
         if (leaf) return null;
         return children.get(i).search(key);
@@ -66,6 +66,109 @@ public class BTreeNode<T extends Comparable<T>> {
         }
         children.add(i + 1, z);
         keys.add(i, y.keys.remove(t - 1));
+    }
+
+
+
+    void remove(T key) {
+        int idx = findKey(key);
+
+        if (idx < keys.size() && keys.get(idx).compareTo(key) == 0) {
+            if (leaf) removeFromLeaf(idx);
+            else removeFromNonLeaf(idx);
+        } else {
+            if (leaf) return; // Key not found
+
+            boolean flag = (idx == keys.size());
+            if (children.get(idx).keys.size() < t) fill(idx);
+
+            if (flag && idx > keys.size()) children.get(idx - 1).remove(key);
+            else children.get(idx).remove(key);
+        }
+    }
+
+    int findKey(T key) {
+        int idx = 0;
+        while (idx < keys.size() && keys.get(idx).compareTo(key) < 0) ++idx;
+        return idx;
+    }
+
+    void removeFromLeaf(int idx) {
+        keys.remove(idx);
+    }
+
+    void removeFromNonLeaf(int idx) {
+        T k = keys.get(idx);
+
+        if (children.get(idx).keys.size() >= t) {
+            T pred = getPredecessor(idx);
+            keys.set(idx, pred);
+            children.get(idx).remove(pred);
+        } else if (children.get(idx + 1).keys.size() >= t) {
+            T succ = getSuccessor(idx);
+            keys.set(idx, succ);
+            children.get(idx + 1).remove(succ);
+        } else {
+            merge(idx);
+            children.get(idx).remove(k);
+        }
+    }
+
+    T getPredecessor(int idx) {
+        BTreeNode<T> cur = children.get(idx);
+        while (!cur.leaf) cur = cur.children.get(cur.children.size() - 1);
+        return cur.keys.get(cur.keys.size() - 1);
+    }
+
+    T getSuccessor(int idx) {
+        BTreeNode<T> cur = children.get(idx + 1);
+        while (!cur.leaf) cur = cur.children.get(0);
+        return cur.keys.get(0);
+    }
+
+    void fill(int idx) {
+        if (idx != 0 && children.get(idx - 1).keys.size() >= t)
+            borrowFromPrev(idx);
+        else if (idx != keys.size() && children.get(idx + 1).keys.size() >= t)
+            borrowFromNext(idx);
+        else {
+            if (idx != keys.size()) merge(idx);
+            else merge(idx - 1);
+        }
+    }
+
+    void borrowFromPrev(int idx) {
+        BTreeNode<T> child = children.get(idx);
+        BTreeNode<T> sibling = children.get(idx - 1);
+
+        child.keys.add(0, keys.get(idx - 1));
+        if (!child.leaf)
+            child.children.add(0, sibling.children.remove(sibling.children.size() - 1));
+
+        keys.set(idx - 1, sibling.keys.remove(sibling.keys.size() - 1));
+    }
+
+    void borrowFromNext(int idx) {
+        BTreeNode<T> child = children.get(idx);
+        BTreeNode<T> sibling = children.get(idx + 1);
+
+        child.keys.add(keys.get(idx));
+        if (!child.leaf)
+            child.children.add(sibling.children.remove(0));
+
+        keys.set(idx, sibling.keys.remove(0));
+    }
+
+    void merge(int idx) {
+        BTreeNode<T> child = children.get(idx);
+        BTreeNode<T> sibling = children.get(idx + 1);
+
+        child.keys.add(keys.remove(idx));
+        child.keys.addAll(sibling.keys);
+
+        if (!child.leaf) child.children.addAll(sibling.children);
+
+        children.remove(idx + 1);
     }
 
     public void traverse() {
