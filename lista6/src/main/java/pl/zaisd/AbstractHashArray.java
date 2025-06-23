@@ -53,8 +53,6 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
         int insertAttempts = 0;
         while (array[subHash] != null) {
             if (insertAttempts > 2 * Math.log(capacity) + 1) {
-//                hash++;
-//                insertAttempts = 0;
                 System.out.println(this.toString() + ": Too many inserts: " + insertAttempts);
             }
             subHash = hashConflictIncrease(hash, insertAttempts);
@@ -64,7 +62,7 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
 //        System.out.println("value added: " + value + " index: " + hash + " insertAttempts: " + insertAttempts);
         array[hash] = value;
         size++;
-        return null;
+        return value;
     }
 
     public V remove(V value) {
@@ -105,7 +103,7 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
         Object[] oldArray = Arrays.copyOf(array, capacity);
         int newCapacity = 2 * capacity + 1;
         while (!new BigInteger(String.valueOf(newCapacity)).isProbablePrime(7)) {
-            newCapacity++;
+            newCapacity+=2;
         }
         capacity = newCapacity;
         array = new Object[newCapacity];
