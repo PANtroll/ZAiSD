@@ -1,7 +1,5 @@
 package pl.zaisd;
 
-import com.sun.source.tree.LambdaExpressionTree;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,7 +14,7 @@ public class Main {
         File path = new File("lista7/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
         List<Integer> ts = List.of(2, 16, 128);
-        for (int i = 100; i < 1_000; i*=2) {
+        for (int i = 1_000; i < 50_000; i *= 2) {
             for (int t : ts) {
                 BTree<Integer> integerBTree = new BTree<>(t);
                 BTree<Double> doubleBTree = new BTree<>(t);
@@ -29,8 +27,8 @@ public class Main {
             Set<Double> doubleTreeSet = new TreeSet<>();
             Set<String> stringTreeSet = new TreeSet<>();
             runWithStopwatchInteger(integerTreeSet, writer, i);
-            runWithStopwatchInteger(doubleTreeSet, writer, i);
-            runWithStopwatchInteger(stringTreeSet, writer, i);
+            runWithStopwatchDouble(doubleTreeSet, writer, i);
+            runWithStopwatchString(stringTreeSet, writer, i);
         }
 
         writer.close();
@@ -41,23 +39,27 @@ public class Main {
         List<Integer> values = new ArrayList<>();
         int ppb = r.nextInt(100);
         long startTime = System.nanoTime();
-        for (int i = 0; i < iterations; i++) {
-            if (ppb <= 51) {
-                Integer value = r.nextInt();
-                values.add(value);
-                tree.insert(value);
-            } else if (ppb < 99) {
-                if(values.isEmpty()) {
-                    continue;
+        for (int j = 0; j < 5; j++) {
+            tree.clear();
+            values.clear();
+            for (int i = 0; i < iterations; i++) {
+                ppb = r.nextInt(100);
+                if (ppb <= 51) {
+                    Integer value = r.nextInt();
+                    values.add(value);
+                    tree.insert(value);
+                } else if (ppb < 99) {
+                    if (values.isEmpty()) {
+                        continue;
+                    }
+                    int value = r.nextInt(values.size());
+                    Integer searchedObject = values.get(value);
+                    tree.remove(searchedObject);
+                    values.remove(searchedObject);
+                } else {
+                    tree.traverse();
                 }
-                int value = r.nextInt(values.size());
-                Integer searchedObject = values.get(value);
-                tree.remove(searchedObject);
-                values.remove(searchedObject);
-            } else {
-                tree.traverse();
             }
-            ppb = r.nextInt(100);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
@@ -70,24 +72,27 @@ public class Main {
         List<Double> values = new ArrayList<>();
         int ppb = r.nextInt(100);
         long startTime = System.nanoTime();
-
-        for (int i = 0; i < iterations; i++) {
-            if (ppb <= 51) {
-                Double value = r.nextDouble();
-                values.add(value);
-                tree.insert(value);
-            } else if (ppb < 99) {
-                if(values.isEmpty()) {
-                    continue;
+        for (int j = 0; j < 5; j++) {
+            tree.clear();
+            values.clear();
+            for (int i = 0; i < iterations; i++) {
+                ppb = r.nextInt(100);
+                if (ppb <= 51) {
+                    Double value = r.nextDouble();
+                    values.add(value);
+                    tree.insert(value);
+                } else if (ppb < 99) {
+                    if (values.isEmpty()) {
+                        continue;
+                    }
+                    int value = r.nextInt(values.size());
+                    Double searchedObject = values.get(value);
+                    tree.remove(searchedObject);
+                    values.remove(searchedObject);
+                } else {
+                    tree.traverse();
                 }
-                int value = r.nextInt(values.size());
-                Double searchedObject = values.get(value);
-                tree.remove(searchedObject);
-                values.remove(searchedObject);
-            } else {
-                tree.traverse();
             }
-            ppb = r.nextInt(100);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
@@ -102,23 +107,27 @@ public class Main {
         List<String> values = new ArrayList<>();
         int ppb = r.nextInt(100);
         long startTime = System.nanoTime();
-        for (int i = 0; i < iterations; i++) {
-            if (ppb <= 51) {
-                String value = randomString(r, 10);
-                values.add(value);
-                tree.insert(value);
-            } else if (ppb < 99) {
-                if(values.isEmpty()) {
-                    continue;
+        for (int j = 0; j < 5; j++) {
+            tree.clear();
+            values.clear();
+            for (int i = 0; i < iterations; i++) {
+                ppb = r.nextInt(100);
+                if (ppb <= 51) {
+                    String value = randomString(r, 10);
+                    values.add(value);
+                    tree.insert(value);
+                } else if (ppb < 99) {
+                    if (values.isEmpty()) {
+                        continue;
+                    }
+                    int value = r.nextInt(values.size());
+                    String searchedObject = values.get(value);
+                    tree.remove(searchedObject);
+                    values.remove(searchedObject);
+                } else {
+                    tree.traverse();
                 }
-                int value = r.nextInt(values.size());
-                String searchedObject = values.get(value);
-                tree.remove(searchedObject);
-                values.remove(searchedObject);
-            } else {
-                tree.traverse();
             }
-            ppb = r.nextInt(100);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
@@ -132,23 +141,27 @@ public class Main {
         List<Integer> values = new ArrayList<>();
         int ppb = r.nextInt(100);
         long startTime = System.nanoTime();
-        for (int i = 0; i < iterations; i++) {
-            if (ppb <= 51) {
-                Integer value = r.nextInt();
-                values.add(value);
-                tree.add(value);
-            } else if (ppb < 99) {
-                if(values.isEmpty()) {
-                    continue;
+        for (int j = 0; j < 5; j++) {
+            tree.clear();
+            values.clear();
+            for (int i = 0; i < iterations; i++) {
+                ppb = r.nextInt(100);
+                if (ppb <= 51) {
+                    Integer value = r.nextInt();
+                    values.add(value);
+                    tree.add(value);
+                } else if (ppb < 99) {
+                    if (values.isEmpty()) {
+                        continue;
+                    }
+                    int value = r.nextInt(values.size());
+                    Integer searchedObject = values.get(value);
+                    tree.remove(searchedObject);
+                    values.remove(searchedObject);
+                } else {
+                    tree.forEach(e -> System.out.print(e + " "));
                 }
-                int value = r.nextInt(values.size());
-                Integer searchedObject = values.get(value);
-                tree.remove(searchedObject);
-                values.remove(searchedObject);
-            } else {
-                tree.forEach(e -> System.out.print(e + " "));
             }
-            ppb = r.nextInt(100);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
@@ -161,24 +174,27 @@ public class Main {
         List<Double> values = new ArrayList<>();
         int ppb = r.nextInt(100);
         long startTime = System.nanoTime();
-
-        for (int i = 0; i < iterations; i++) {
-            if (ppb <= 51) {
-                Double value = r.nextDouble();
-                values.add(value);
-                tree.add(value);
-            } else if (ppb < 99) {
-                if(values.isEmpty()) {
-                    continue;
+        for (int j = 0; j < 5; j++) {
+            tree.clear();
+            values.clear();
+            for (int i = 0; i < iterations; i++) {
+                ppb = r.nextInt(100);
+                if (ppb <= 51) {
+                    Double value = r.nextDouble();
+                    values.add(value);
+                    tree.add(value);
+                } else if (ppb < 99) {
+                    if (values.isEmpty()) {
+                        continue;
+                    }
+                    int value = r.nextInt(values.size());
+                    Double searchedObject = values.get(value);
+                    tree.remove(searchedObject);
+                    values.remove(searchedObject);
+                } else {
+                    tree.forEach(e -> System.out.print(e + " "));
                 }
-                int value = r.nextInt(values.size());
-                Double searchedObject = values.get(value);
-                tree.remove(searchedObject);
-                values.remove(searchedObject);
-            } else {
-                tree.forEach(e -> System.out.print(e + " "));
             }
-            ppb = r.nextInt(100);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');
@@ -193,23 +209,27 @@ public class Main {
         List<String> values = new ArrayList<>();
         int ppb = r.nextInt(100);
         long startTime = System.nanoTime();
-        for (int i = 0; i < iterations; i++) {
-            if (ppb <= 51) {
-                String value = randomString(r, 10);
-                values.add(value);
-                tree.add(value);
-            } else if (ppb < 99) {
-                if(values.isEmpty()) {
-                    continue;
+        for (int j = 0; j < 5; j++) {
+            tree.clear();
+            values.clear();
+            for (int i = 0; i < iterations; i++) {
+                ppb = r.nextInt(100);
+                if (ppb <= 51) {
+                    String value = randomString(r, 10);
+                    values.add(value);
+                    tree.add(value);
+                } else if (ppb < 99) {
+                    if (values.isEmpty()) {
+                        continue;
+                    }
+                    int value = r.nextInt(values.size());
+                    String searchedObject = values.get(value);
+                    tree.remove(searchedObject);
+                    values.remove(searchedObject);
+                } else {
+                    tree.forEach(e -> System.out.print(e + " "));
                 }
-                int value = r.nextInt(values.size());
-                String searchedObject = values.get(value);
-                tree.remove(searchedObject);
-                values.remove(searchedObject);
-            } else {
-                tree.forEach(e -> System.out.print(e + " "));
             }
-            ppb = r.nextInt(100);
         }
         double duration = (System.nanoTime() - startTime) / 5_000_000.0;// 5 invokes
         String durationStr = (DELIMITER + duration).replace('.', ',');

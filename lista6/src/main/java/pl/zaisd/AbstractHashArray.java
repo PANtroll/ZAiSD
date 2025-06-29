@@ -34,15 +34,12 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
         int searchAttempts = 0;
         while (!value.equals(obj) && obj != null) {
             if (searchAttempts > 2 * Math.log(capacity) + 1) {
-//                hash++;
-//                searchAttempts = 0;
                 System.out.println(this.toString() + ": Too many searches: " + searchAttempts);
             }
             subHash = hashConflictIncrease(hash, searchAttempts);
             obj = (V) array[subHash];
             searchAttempts++;
         }
-//        System.out.println("value found: " + value + " index: " + hash + " searchAttempts: " + searchAttempts);
         return obj;
     }
 
@@ -59,7 +56,6 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
             insertAttempts++;
         }
         hash = subHash;
-//        System.out.println("value added: " + value + " index: " + hash + " insertAttempts: " + insertAttempts);
         array[hash] = value;
         size++;
         return value;
@@ -99,7 +95,6 @@ public abstract class AbstractHashArray<V> implements HashArray<V> {
         if (size + 1  < 0.66 * capacity) {
             return false;
         }
-//        System.out.println("increased capacity");
         Object[] oldArray = Arrays.copyOf(array, capacity);
         int newCapacity = 2 * capacity + 1;
         while (!new BigInteger(String.valueOf(newCapacity)).isProbablePrime(7)) {

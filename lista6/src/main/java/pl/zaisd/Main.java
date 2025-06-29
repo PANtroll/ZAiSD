@@ -14,10 +14,10 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
 
-        HashArray<String> hashArrayLine = new HashArrayLine<>();
-        HashArray<String> hashArrayDouble = new HashArrayDouble<>();
-        HashArray<String> hashArraySquare = new HashArraySquare<>();
-        Set<String> set = new HashSet<>();
+        HashArray<Double> hashArrayLine = new HashArrayLine<>();
+        HashArray<Double> hashArrayDouble = new HashArrayDouble<>();
+        HashArray<Double> hashArraySquare = new HashArraySquare<>();
+        Set<Double> set = new HashSet<>();
 
         File path = new File("lista6/dane.csv");
         BufferedWriter writer = new BufferedWriter(new FileWriter(path));
@@ -33,21 +33,21 @@ public class Main {
     private static void runWithStopwatch(HashArray hashArray, BufferedWriter writer, int iterations) throws IOException {
         int result = 0;
         Random r = new Random();
-        List<Integer> values = new LinkedList<>();
+        List<Double> values = new LinkedList<>();
         long startTime = System.nanoTime();
         for (int i = 0; i < iterations; i++) {
-            int value = r.nextInt();
+            Double value = r.nextDouble();
             values.add(value);
             hashArray.insert(value);
         }
-        for (Integer value : values) {
+        for (Double value : values) {
             Object searchedObject = hashArray.search(value);
             if (searchedObject == null || !value.equals(searchedObject)) {
                 throw new IllegalStateException("Object not found");
             }
         }
         for (int i = 0; i < iterations; i++) {
-            Integer value = r.nextInt();
+            Double value = r.nextDouble();
             Object searchedObject = hashArray.search(value);
             if (values.contains(value) && !value.equals(searchedObject)) {
                 throw new IllegalStateException("Object not found");
@@ -63,21 +63,21 @@ public class Main {
     private static void runWithStopwatch(Set set, BufferedWriter writer, int iterations) throws IOException {
         int result = 0;
         Random r = new Random();
-        List<String> values = new LinkedList<>();
+        List<Double> values = new LinkedList<>();
         long startTime = System.nanoTime();
         for (int i = 0; i < iterations; i++) {
-            String value = randomString(r, 10);
+            double value = r.nextDouble();
             values.add(value);
             set.add(value);
         }
-        for (String value : values) {
+        for (Double value : values) {
             boolean searchedObject = set.contains(value);
             if (!searchedObject) {
                 throw new IllegalStateException("Object not found");
             }
         }
         for (int i = 0; i < iterations; i++) {
-            String value = randomString(r, 10);
+            Double value = r.nextDouble();
             boolean searchedObject = set.contains(value);
             if (values.contains(value) && !searchedObject) {
                 throw new IllegalStateException("Object not found");

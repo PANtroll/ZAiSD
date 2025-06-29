@@ -18,10 +18,7 @@ public class BTreeNode<T extends Comparable<T>> {
     }
 
     public T search(T key) {
-        int i = 0;
-        while (i < keys.size() && key.compareTo(keys.get(i)) > 0) {
-            i++;
-        }
+        int i = findKey(key);
         if (i < keys.size() && key.compareTo(keys.get(i)) == 0) {
             return keys.get(i);
         }
@@ -89,7 +86,9 @@ public class BTreeNode<T extends Comparable<T>> {
 
     int findKey(T key) {
         int idx = 0;
-        while (idx < keys.size() && keys.get(idx).compareTo(key) < 0) ++idx;
+        while (idx < keys.size() && keys.get(idx).compareTo(key) < 0) {
+            idx++;
+        }
         return idx;
     }
 
