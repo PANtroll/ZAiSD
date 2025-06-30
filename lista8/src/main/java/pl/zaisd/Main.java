@@ -18,10 +18,10 @@ public class Main {
         Algorithm bruteForce = new BruteForce();
         Algorithm branchAndBound = new BranchAndBound();
         Random r = new Random();
-        for (int i = 3; i <= 15; i++) {
+        for (int i = 3; i <= 20; i++) {
             Graph graph = new Graph(i);
             int startPoint = r.nextInt(i);
-            runWithStopwatch(bruteForce, graph, startPoint, writer);
+//            runWithStopwatch(bruteForce, graph, startPoint, writer);
             runWithStopwatch(branchAndBound, graph, startPoint, writer);
         }
         writer.close();

@@ -45,4 +45,8 @@ public class BruteForce implements Algorithm{
         return result;
     }
 
+    @Override
+    public String toString() {
+        return "BruteForce";
+    }
 }

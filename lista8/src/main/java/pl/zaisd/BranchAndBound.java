@@ -41,4 +41,9 @@ public class BranchAndBound implements Algorithm {
         }
         return bestCost;
     }
+
+    @Override
+    public String toString() {
+        return "BranchAndBound";
+    }
 }
